@@ -24,7 +24,7 @@ export default function Page(props: Props) {
     <div className="px-4 flex flex-col items-center justify-start h-screen w-screen bg-gray-50 overflow-y-auto">
       <div
         className="text-center relative -top-2/4"
-        style={{ paddingTop: "50%" }}
+        style={{ paddingTop: "50vh" }}
       >
         <h1 className="flex flex-col">
           <span className="text-9xl font-bold">{tweets.length}</span>
@@ -34,10 +34,7 @@ export default function Page(props: Props) {
         <div>Last update: {dateFormat.format(lastUpdate)}</div>
       </div>
 
-      <div
-        className="mt-16 space-y-8"
-        style={{ position: "relative", top: "-50%" }}
-      >
+      <div className="mt-16 space-y-8 relative -top-2/4">
         {tweets.map((tweet) => (
           <Tweet key={tweet.id} {...tweet} />
         ))}
@@ -47,7 +44,7 @@ export default function Page(props: Props) {
 }
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const recentTweets = await getRecentTweets();
+  const recentTweets = await getRecentTweets("indihome");
   const rantTweets = recentTweets.filter((tweet) => isRant(tweet.text));
 
   return {
