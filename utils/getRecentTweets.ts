@@ -56,6 +56,7 @@ export default async function getRecentTweets(
 
   while (
     typeof data.meta.oldest_id !== "undefined" &&
+    typeof data.meta.next_token !== "undefined" &&
     !isOverStartTime &&
     tweets.length < 400
   ) {
@@ -64,6 +65,10 @@ export default async function getRecentTweets(
       until_id: data.meta.oldest_id,
       next_token: data.meta.next_token,
     });
+
+    if (!Array.isArray(data.data)) {
+      break;
+    }
 
     tweets.push(...data.data);
     users.push(...data.includes.users);

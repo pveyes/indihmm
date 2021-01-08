@@ -4,9 +4,10 @@ import { Tweet, TweetItem } from "../components/Tweet";
 import isRant from "../utils/isRant";
 import getRecentTweets from "../utils/getRecentTweets";
 
-interface Props {
+export interface Props {
   tweets: Array<TweetItem>;
   lastUpdate: number;
+  cronDurationHour: number;
 }
 
 const dateFormat = new Intl.DateTimeFormat("en-id", {
@@ -19,7 +20,7 @@ const dateFormat = new Intl.DateTimeFormat("en-id", {
 });
 
 export default function Page(props: Props) {
-  const { tweets, lastUpdate } = props;
+  const { tweets, lastUpdate, cronDurationHour } = props;
   return (
     <div className="px-4 flex flex-col items-center justify-start h-screen w-screen bg-gray-50 overflow-y-auto">
       <div
@@ -30,7 +31,9 @@ export default function Page(props: Props) {
           <span className="text-9xl font-bold">{tweets.length}</span>
           <span className="text-4xl font-bold text-gray-400">komplain</span>
         </h1>
-        <div className="text-gray-800">selama 1 jam terakhir</div>
+        <div className="text-gray-800">
+          selama {cronDurationHour} jam terakhir
+        </div>
         <div>Last update: {dateFormat.format(lastUpdate)}</div>
       </div>
 
@@ -46,12 +49,14 @@ export default function Page(props: Props) {
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const recentTweets = await getRecentTweets("indihome");
   const rantTweets = recentTweets.filter((tweet) => isRant(tweet.text));
+  const cronDurationHour = 1;
 
   return {
-    revalidate: 60 * 60,
+    revalidate: cronDurationHour * 60 * 60,
     props: {
       tweets: rantTweets,
       lastUpdate: new Date().getTime(),
+      cronDurationHour,
     },
   };
 };
