@@ -29,7 +29,7 @@ export default function Page(props: Props) {
         <title>Komplain ke {title}</title>
         <meta
           name="description"
-          content={`${tweets.length} komplain, {cronDurationHour} jam terakhir`}
+          content={`${tweets.length} komplain dalam ${cronDurationHour} jam terakhir`}
         />
       </Head>
       <div className="px-4 flex flex-col items-center justify-start h-screen w-screen bg-gray-50 overflow-y-auto">
